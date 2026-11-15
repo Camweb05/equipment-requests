@@ -131,8 +131,8 @@
         <p class="form-hint">Enter the employee and equipment details below.</p>
       </div>
       <form id="request-form">
-        <div><label for="employee">Employee name</label><input id="employee" name="employee" placeholder="e.g. Alex Morgan" required></div>
-        <div><label for="item">Equipment item</label><input id="item" name="item" placeholder="e.g. Laptop" required></div>
+        <div><label for="employee">Employee name</label><input id="employee" name="employee" placeholder="e.g. Alex Morgan"></div>
+        <div><label for="item">Equipment item</label><input id="item" name="item" placeholder="e.g. Laptop"></div>
         <div><label for="date">Date requested</label><input id="date" name="date" type="date" required></div>
         <div><label for="priority">Priority</label><select id="priority" name="priority"><option>Medium</option><option>High</option><option>Low</option></select></div>
         <button type="submit">Add request</button>
@@ -213,10 +213,16 @@
       event.preventDefault();
       const form = event.currentTarget;
       const data = new FormData(form);
+      const employee = data.get("employee").trim();
+      const item = data.get("item").trim();
+      if (!employee || !item) {
+        feedback.textContent = "Employee name and equipment item are required.";
+        return;
+      }
       requests.unshift({
         id: Math.max(...requests.map((request) => request.id)) + 1,
-        employee: data.get("employee").trim(),
-        item: data.get("item").trim(),
+        employee,
+        item,
         date: data.get("date"),
         priority: data.get("priority")
       });
